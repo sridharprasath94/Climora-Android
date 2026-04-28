@@ -9,4 +9,8 @@
     <string name="error_title">Error</string>
     <string name="ok">OK</string>
     <string name="search_hint">Search city…</string>
+    <string name="icon_humidity">💧</string>
+    <string name="label_humidity">Humidity</string>
+    <string name="icon_feels_like">🌡️</string>
+    <string name="label_feels_like">Feels like</string>
 </resources>

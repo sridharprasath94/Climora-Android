@@ -231,6 +231,36 @@
 
         </LinearLayout>
 
+        <!-- ── Forecast card ─────────────────────────────────────────── -->
+        <LinearLayout
+            android:id="@+id/forecastCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_weather_card"
+            android:layout_marginTop="12dp"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/forecastProgress"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="16dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorWeatherText"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerForecast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- Full-screen loading overlay -->

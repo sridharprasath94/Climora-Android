@@ -13,4 +13,6 @@
     <string name="label_humidity">Humidity</string>
     <string name="icon_feels_like">🌡️</string>
     <string name="label_feels_like">Feels like</string>
+    <string name="forecast_today">Today</string>
+    <string name="forecast_temp_range">%1$d° / %2$d°</string>
 </resources>

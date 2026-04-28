@@ -28,19 +28,14 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField(
-            "String",
-            "API_KEY",
-            "\"$apiKey\""
-        )
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "BASE_URL", "\"https://api.weatherapi.com/v1/\"")
+    }
 
-        buildTypes {
-            debug {
-                buildConfigField("String", "BASE_URL", "\"https://api.weatherapi.com/v1/\"")
-            }
-            release {
-                buildConfigField("String", "BASE_URL", "\"https://api.weatherapi.com/v1/\"")
-            }
+    buildTypes {
+        debug { }
+        release {
+            isMinifyEnabled = false
         }
     }
     kotlin {

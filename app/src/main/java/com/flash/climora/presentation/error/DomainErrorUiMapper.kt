@@ -6,5 +6,6 @@ fun DomainError.toUiMessage(): String = when (this) {
     DomainError.NetworkUnavailable -> "No internet connection"
     DomainError.RateLimitExceeded -> "API rate limit exceeded"
     DomainError.InvalidRequest -> "Invalid request"
+    DomainError.LocationUnavailable -> "Could not determine your location"
     DomainError.Unknown -> "Something went wrong"
 }

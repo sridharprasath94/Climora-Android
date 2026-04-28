@@ -1,16 +1,16 @@
 package com.flash.climora.presentation.weather
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flash.climora.core.Result
+import com.flash.climora.domain.location.LocationProvider
+import com.flash.climora.domain.model.Weather
 import com.flash.climora.domain.usecase.GetCurrentWeatherUseCase
+import com.flash.climora.presentation.error.toUiMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.flash.climora.core.Result
-import com.flash.climora.domain.location.LocationProvider
-import com.flash.climora.presentation.error.toUiMessage
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,16 +25,14 @@ class WeatherViewModel @Inject constructor(
     fun fetchWeatherByLocation() {
         viewModelScope.launch {
             _state.value = WeatherUiState.Loading
-
-            val result = locationProvider.getCurrentLocation()
-
-            result.onSuccess { coordinates ->
-                fetchWeatherByCoordinates(
-                    coordinates.latitude,
-                    coordinates.longitude
-                )
-            }.onFailure {
-                _state.value = WeatherUiState.Error("Location failed")
+            when (val locationResult = locationProvider.getCurrentLocation()) {
+                is Result.Success -> {
+                    val coords = locationResult.data
+                    handleWeatherResult(getWeatherUseCase(coords.latitude, coords.longitude))
+                }
+                is Result.Error -> {
+                    _state.value = WeatherUiState.Error(locationResult.error.toUiMessage())
+                }
             }
         }
     }
@@ -42,32 +40,21 @@ class WeatherViewModel @Inject constructor(
     fun fetchWeather(city: String) {
         viewModelScope.launch {
             _state.value = WeatherUiState.Loading
-            when (val result = getWeatherUseCase(city)) {
-
-                is Result.Success -> {
-                    _state.value = WeatherUiState.Success(result.data)
-                }
-
-                is Result.Error -> {
-                    _state.value = WeatherUiState.Error(result.error.toUiMessage())
-                }
-            }
+            handleWeatherResult(getWeatherUseCase(city))
         }
     }
 
     fun fetchWeatherByCoordinates(lat: Double, lon: Double) {
         viewModelScope.launch {
             _state.value = WeatherUiState.Loading
-            when (val result = getWeatherUseCase(lat, lon)) {
+            handleWeatherResult(getWeatherUseCase(lat, lon))
+        }
+    }
 
-                is Result.Success -> {
-                    _state.value = WeatherUiState.Success(result.data)
-                }
-
-                is Result.Error -> {
-                    _state.value = WeatherUiState.Error(result.error.toUiMessage())
-                }
-            }
+    private fun handleWeatherResult(result: Result<Weather>) {
+        _state.value = when (result) {
+            is Result.Success -> WeatherUiState.Success(result.data)
+            is Result.Error -> WeatherUiState.Error(result.error.toUiMessage())
         }
     }
 }

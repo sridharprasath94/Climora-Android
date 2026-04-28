@@ -8,5 +8,7 @@ sealed class DomainError {
 
     object InvalidRequest : DomainError()
 
+    object LocationUnavailable : DomainError()
+
     object Unknown : DomainError()
 }

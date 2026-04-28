@@ -78,6 +78,9 @@ dependencies {
     // Location
     implementation(libs.play.services.location)
 
+    // RecyclerView
+    implementation(libs.androidx.recyclerview)
+
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)

@@ -13,6 +13,7 @@ fragmentKtx = "1.8.9"
 coroutines = "1.10.2"
 playServicesLocation = "21.3.0"
 retrofit = "3.0.0"
+recyclerview = "1.4.0"
 vbpd = "2.0.4"
 
 [libraries]
@@ -30,6 +31,7 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 vbpd = { group = "dev.androidbroadcast.vbpd", name = "vbpd", version.ref = "vbpd" }
 vbpd-reflection = { group = "dev.androidbroadcast.vbpd", name = "vbpd-reflection", version.ref = "vbpd" }
 

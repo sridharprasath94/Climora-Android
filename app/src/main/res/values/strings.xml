@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Climora</string>
+    <string name="temperature">%1$d°C</string>
+    <string name="region_country">%1$s, %2$s</string>
+    <string name="country_only">%1$s</string>
+    <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="error_location_denied">Location permission denied. You can still search by city.</string>
+    <string name="error_title">Error</string>
+    <string name="ok">OK</string>
+    <string name="search_hint">Search city…</string>
+</resources>

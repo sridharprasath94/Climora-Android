@@ -1,22 +1,20 @@
 package com.flash.climora.data.remote.error
 
 import com.flash.climora.domain.error.DomainError
+import retrofit2.HttpException
+import java.io.IOException
 
 object NetworkErrorMapper {
-
-    fun fromException(e: Exception): NetworkError {
-        return when (e) {
-            is retrofit2.HttpException -> {
-                when (e.code()) {
+    fun fromThrowable(t: Throwable): NetworkError {
+        return when (t) {
+            is HttpException -> {
+                when (t.code()) {
                     403 -> NetworkError.RateLimitExceeded
-                    else -> NetworkError.InvalidStatusCode(e.code())
+                    else -> NetworkError.InvalidStatusCode(t.code())
                 }
             }
 
-            is java.io.IOException -> NetworkError.Network(e)
-
-            is com.google.gson.JsonParseException ->
-                NetworkError.Decoding(e)
+            is IOException -> NetworkError.Network(t)
 
             else -> NetworkError.InvalidResponse
         }

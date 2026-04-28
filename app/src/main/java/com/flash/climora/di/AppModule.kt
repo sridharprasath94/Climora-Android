@@ -3,10 +3,6 @@ package com.flash.climora.di
 
 import com.flash.climora.BuildConfig
 import com.flash.climora.data.remote.WeatherApi
-import com.flash.climora.data.repository.WeatherRepositoryImpl
-import com.flash.climora.domain.repository.WeatherRepository
-import com.flash.climora.domain.usecase.GetCurrentWeatherUseCase
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,6 +1,8 @@
 package com.flash.climora.data.location
 
 import android.annotation.SuppressLint
+import com.flash.climora.core.Result
+import com.flash.climora.domain.error.DomainError
 import com.flash.climora.domain.location.LocationProvider
 import com.flash.climora.domain.model.Coordinates
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,15 +24,13 @@ class LocationProviderImpl @Inject constructor(
             ).addOnSuccessListener { location ->
                 if (location != null) {
                     cont.resume(
-                        Result.success(
-                            Coordinates(location.latitude, location.longitude)
-                        )
+                        Result.Success(Coordinates(location.latitude, location.longitude))
                     )
                 } else {
-                    cont.resume(Result.failure(Exception("Location null")))
+                    cont.resume(Result.Error(DomainError.LocationUnavailable))
                 }
             }.addOnFailureListener {
-                cont.resume(Result.failure(it))
+                cont.resume(Result.Error(DomainError.LocationUnavailable))
             }
         }
 }

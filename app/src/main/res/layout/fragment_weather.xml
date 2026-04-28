@@ -20,14 +20,15 @@
         android:layout_height="match_parent"
         android:background="@color/colorWeatherOverlay" />
 
-    <!-- Main content -->
+    <!-- Main content — top/bottom padding is set in code to account for system bars -->
     <LinearLayout
+        android:id="@+id/contentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="24dp"
-        android:paddingBottom="32dp"
-        android:paddingHorizontal="24dp">
+        android:paddingTop="@dimen/content_padding_top"
+        android:paddingBottom="@dimen/content_padding_bottom"
+        android:paddingHorizontal="@dimen/content_padding_horizontal">
 
         <!-- ── Search row ───────────────────────────────────────────── -->
         <LinearLayout

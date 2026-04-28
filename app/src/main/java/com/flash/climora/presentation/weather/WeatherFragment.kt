@@ -16,6 +16,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.flash.climora.R
 import com.flash.climora.databinding.FragmentWeatherBinding
 import com.flash.climora.domain.model.Weather
@@ -28,6 +30,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private val binding by viewBinding(FragmentWeatherBinding::bind)
     private val viewModel: WeatherViewModel by viewModels()
+    private val forecastAdapter = ForecastAdapter()
 
     private var errorDialog: AlertDialog? = null
 
@@ -44,11 +47,13 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         super.onViewCreated(view, savedInstanceState)
 
         applyWindowInsets()
+        setupForecastRecycler()
         setupClickListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { renderState(it) }
+                launch { viewModel.weatherState.collect { renderState(it) } }
+                launch { viewModel.forecastState.collect { renderForecast(it) } }
             }
         }
 
@@ -60,6 +65,14 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     // --------------------------
     // Setup
     // --------------------------
+
+    private fun setupForecastRecycler() {
+        binding.recyclerForecast.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = forecastAdapter
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        }
+    }
 
     private fun applyWindowInsets() {
         // Keep the background photo edge-to-edge (behind status + nav bars),
@@ -142,6 +155,26 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         setSearchEnabled(true)
     }
 
+    private fun renderForecast(state: ForecastUiState) {
+        when (state) {
+            is ForecastUiState.Loading -> {
+                binding.forecastCard.visibility = View.VISIBLE
+                binding.forecastProgress.visibility = View.VISIBLE
+                binding.recyclerForecast.visibility = View.GONE
+            }
+            is ForecastUiState.Success -> {
+                binding.forecastCard.visibility = View.VISIBLE
+                binding.forecastProgress.visibility = View.GONE
+                binding.recyclerForecast.visibility = View.VISIBLE
+                forecastAdapter.submitList(state.days)
+            }
+            is ForecastUiState.Error -> {
+                binding.forecastCard.visibility = View.GONE
+            }
+            else -> Unit
+        }
+    }
+
     private fun showError(message: String) {
         binding.loadingOverlay.visibility = View.GONE
         clearWeatherData()
@@ -177,6 +210,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         binding.textCity.visibility = v
         binding.textRegion.visibility = v
         binding.detailCard.visibility = v
+        if (!visible) binding.forecastCard.visibility = View.GONE
     }
 
     private fun clearWeatherData() {

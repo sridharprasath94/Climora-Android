@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,8 +32,8 @@ class WeatherViewModel @Inject constructor(
 
     fun fetchWeatherByLocation() {
         viewModelScope.launch {
-            _weatherState.value = WeatherUiState.Loading
-            _forecastState.value = ForecastUiState.Loading
+            _weatherState.update { WeatherUiState.Loading }
+            _forecastState.update { ForecastUiState.Loading }
 
             when (val locationResult = locationProvider.getCurrentLocation()) {
                 is Result.Success -> {
@@ -40,8 +41,8 @@ class WeatherViewModel @Inject constructor(
                     loadWeatherAndForecastByCoordinates(coords.latitude, coords.longitude)
                 }
                 is Result.Error -> {
-                    _weatherState.value = WeatherUiState.Error(locationResult.error.toUiMessage())
-                    _forecastState.value = ForecastUiState.Error
+                    _weatherState.update { WeatherUiState.Error(locationResult.error.toUiMessage()) }
+                    _forecastState.update { ForecastUiState.Error }
                 }
             }
         }
@@ -49,8 +50,8 @@ class WeatherViewModel @Inject constructor(
 
     fun fetchWeather(city: String) {
         viewModelScope.launch {
-            _weatherState.value = WeatherUiState.Loading
-            _forecastState.value = ForecastUiState.Loading
+            _weatherState.update { WeatherUiState.Loading }
+            _forecastState.update { ForecastUiState.Loading }
 
             // Launch weather and forecast in parallel
             val weatherDeferred = async { getWeatherUseCase(city) }
@@ -58,14 +59,6 @@ class WeatherViewModel @Inject constructor(
 
             handleWeatherResult(weatherDeferred.await())
             handleForecastResult(forecastDeferred.await())
-        }
-    }
-
-    fun fetchWeatherByCoordinates(lat: Double, lon: Double) {
-        viewModelScope.launch {
-            _weatherState.value = WeatherUiState.Loading
-            _forecastState.value = ForecastUiState.Loading
-            loadWeatherAndForecastByCoordinates(lat, lon)
         }
     }
 
@@ -78,16 +71,20 @@ class WeatherViewModel @Inject constructor(
     }
 
     private fun handleWeatherResult(result: Result<Weather>) {
-        _weatherState.value = when (result) {
-            is Result.Success -> WeatherUiState.Success(result.data)
-            is Result.Error -> WeatherUiState.Error(result.error.toUiMessage())
+        _weatherState.update {
+            when (result) {
+                is Result.Success -> WeatherUiState.Success(result.data)
+                is Result.Error -> WeatherUiState.Error(result.error.toUiMessage())
+            }
         }
     }
 
     private fun handleForecastResult(result: Result<List<ForecastDay>>) {
-        _forecastState.value = when (result) {
-            is Result.Success -> ForecastUiState.Success(result.data)
-            is Result.Error -> ForecastUiState.Error
+        _forecastState.update {
+            when (result) {
+                is Result.Success -> ForecastUiState.Success(result.data)
+                is Result.Error -> ForecastUiState.Error
+            }
         }
     }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Dark system mode:
+        - Heavy overlay darkens the photo for a moody look
+        - Light text for contrast against darkened background
+        - Dark frosted glass cards
+    -->
+    <color name="colorWeatherOverlay">#80000000</color>
+    <color name="colorGlassCard">#66000000</color>
+    <color name="colorSearchBg">#66000000</color>
+
+    <color name="colorWeatherText">#FFFFFF</color>
+    <color name="colorWeatherTextSecondary">#CCffffff</color>
+    <color name="colorWeatherHint">#99FFFFFF</color>
+    <color name="colorDetailDivider">#55FFFFFF</color>
+</resources>

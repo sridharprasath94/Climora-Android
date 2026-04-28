@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,8 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/day_image"
-        android:contentDescription="@null" />
+        android:contentDescription="@null"
+        tools:ignore="ImageContrastCheck" />
 
     <!-- Semi-transparent overlay — colour resolved per light/dark system mode -->
     <View
@@ -20,19 +22,20 @@
         android:layout_height="match_parent"
         android:background="@color/colorWeatherOverlay" />
 
-    <!-- Main content -->
+    <!-- Main content — top/bottom padding is set in code to account for system bars -->
     <LinearLayout
+        android:id="@+id/contentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="24dp"
-        android:paddingBottom="32dp"
-        android:paddingHorizontal="24dp">
+        android:paddingTop="@dimen/content_padding_top"
+        android:paddingBottom="@dimen/content_padding_bottom"
+        android:paddingHorizontal="@dimen/content_padding_horizontal">
 
         <!-- ── Search row ───────────────────────────────────────────── -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
@@ -49,10 +52,11 @@
             <EditText
                 android:id="@+id/editCity"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginHorizontal="10dp"
                 android:hint="@string/search_hint"
+                android:autofillHints=""
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:singleLine="true"
@@ -60,7 +64,9 @@
                 android:textColorHint="@color/colorWeatherHint"
                 android:textColorHighlight="#33FFFFFF"
                 android:background="@drawable/bg_search"
-                android:paddingHorizontal="14dp" />
+                android:paddingHorizontal="14dp"
+                android:gravity="center_vertical"
+                tools:ignore="TextContrastCheck,TextfieldTooWide" />
 
             <ImageView
                 android:id="@+id/buttonSearch"
@@ -164,7 +170,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💧"
+                    android:text="@string/icon_humidity"
                     android:textSize="24sp" />
 
                 <TextView
@@ -179,7 +185,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Humidity"
+                    android:text="@string/label_humidity"
                     android:textSize="12sp"
                     android:textColor="@color/colorWeatherTextSecondary" />
 
@@ -202,7 +208,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🌡️"
+                    android:text="@string/icon_feels_like"
                     android:textSize="24sp" />
 
                 <TextView
@@ -217,7 +223,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Feels like"
+                    android:text="@string/label_feels_like"
                     android:textSize="12sp"
                     android:textColor="@color/colorWeatherTextSecondary" />
 

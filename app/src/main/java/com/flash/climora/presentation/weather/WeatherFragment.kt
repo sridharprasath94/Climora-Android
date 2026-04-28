@@ -5,6 +5,9 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
@@ -40,6 +43,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        applyWindowInsets()
         setupClickListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -56,6 +60,19 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     // --------------------------
     // Setup
     // --------------------------
+
+    private fun applyWindowInsets() {
+        // Keep the background photo edge-to-edge (behind status + nav bars),
+        // but push the content clear of the status bar and nav bar.
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.contentLayout.updatePadding(
+                top = systemBars.top + resources.getDimensionPixelSize(R.dimen.content_padding_top),
+                bottom = systemBars.bottom + resources.getDimensionPixelSize(R.dimen.content_padding_bottom)
+            )
+            insets
+        }
+    }
 
     private fun setupClickListeners() {
         binding.buttonSearch.setOnClickListener { submitSearch() }

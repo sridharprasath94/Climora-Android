@@ -52,7 +52,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:layout_marginHorizontal="10dp"
-                android:hint="Search city…"
+                android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:singleLine="true"

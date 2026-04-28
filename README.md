@@ -51,51 +51,11 @@ app/
 
 ```
 app/src/main/java/com/flash/climora/
-├── ClimoraApp.kt                          # Hilt application class
-├── core/
-│   └── Result.kt                          # Sealed domain Result type
-├── data/
-│   ├── location/
-│   │   └── LocationProviderImpl.kt
-│   ├── remote/
-│   │   ├── WeatherApi.kt                  # Retrofit interface
-│   │   ├── dto/
-│   │   │   ├── WeatherDto.kt              # Current weather response + mapping
-│   │   │   └── ForecastDto.kt             # Forecast response + mapping
-│   │   └── error/
-│   │       ├── NetworkError.kt
-│   │       └── NetworkErrorMapper.kt
-│   └── repository/
-│       └── WeatherRepositoryImpl.kt
-├── di/
-│   ├── AppModule.kt
-│   ├── LocationModule.kt
-│   └── RepositoryModule.kt
-├── domain/
-│   ├── error/
-│   │   └── DomainError.kt
-│   ├── location/
-│   │   └── LocationProvider.kt            # Interface
-│   ├── model/
-│   │   ├── Coordinates.kt
-│   │   ├── Weather.kt
-│   │   └── ForecastDay.kt
-│   ├── repository/
-│   │   └── WeatherRepository.kt           # Interface
-│   └── usecase/
-│       ├── GetCurrentWeatherUseCase.kt
-│       └── GetForecastUseCase.kt
-└── presentation/
-    ├── error/
-    │   └── DomainErrorUiMapper.kt         # DomainError → user-facing string
-    └── weather/
-        ├── MainActivity.kt                # Single activity shell
-        ├── WeatherFragment.kt
-        ├── WeatherViewModel.kt
-        ├── WeatherUiState.kt
-        ├── ForecastUiState.kt
-        ├── ForecastAdapter.kt             # ListAdapter with DiffUtil
-        └── WeatherIconMapper.kt
+├── core/           # Shared Result type
+├── data/           # Retrofit API, DTOs, repository impl, location provider
+├── di/             # Hilt modules
+├── domain/         # Models, repository interface, use cases, domain errors
+└── presentation/   # Activity, Fragment, ViewModel, UI state, adapters
 ```
 
 ---
@@ -111,7 +71,6 @@ app/src/main/java/com/flash/climora/
 | Retrofit + Gson | HTTP networking |
 | FusedLocationProvider | Device GPS coordinates |
 | View Binding | Type-safe view access |
-| SwiftLint | *(Android equivalent: Detekt/Lint)* |
 
 ---
 
@@ -128,14 +87,3 @@ The project reads the API key from `local.properties` at build time.
 
 `local.properties` is excluded from version control via `.gitignore`.
 
----
-
-## Requirements
-
-| Requirement | Version |
-|---|---|
-| Android | API 24+ (Android 7.0) |
-| Target / Compile SDK | 36 |
-| Android Studio | Hedgehog+ |
-| Kotlin | 2.2.0 |
-| AGP | 8.13.2 |
